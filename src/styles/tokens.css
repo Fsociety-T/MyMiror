@@ -1,0 +1,31 @@
+:root {
+  /* Surfaces */
+  --app-bg: #090b10;
+  --surface: #0e1118;
+  --card: #141822;
+  --card-elevated: #1a1f2b;
+  --input-bg: #111620;
+  --border: #262c39;
+
+  /* Text */
+  --text-primary: #f2f4f7;
+  --text-secondary: #a4abba;
+  --text-muted: #6f7787;
+
+  /* Accent */
+  --accent: #8b7cff;
+  --accent-soft: #b0a6ff;
+  --accent-deep: #6d5cff;
+
+  /* Status */
+  --success: #55d6a5;
+  --warning: #f0c36a;
+  --danger: #ff7676;
+  --info: #6cb8ff;
+
+  /* Radii */
+  --radius-card: 20px;
+  --radius-card-large: 24px;
+  --radius-button: 16px;
+  --radius-input: 12px;
+}
