@@ -4,6 +4,7 @@ import { Card } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { Modal } from '@/components/ui/Modal'
 import { QUICK_ADD_OPTIONS } from '@/lib/constants'
+import { useProfile } from '@/features/auth/useProfile'
 
 function getGreeting(): string {
   const hour = new Date().getHours()
@@ -22,12 +23,14 @@ function formatToday(): string {
 
 export function HomePage() {
   const [quickAddOpen, setQuickAddOpen] = useState(false)
+  const { data: profile } = useProfile()
+  const displayName = profile?.display_name?.trim() || 'friend'
 
   return (
     <div>
       <section className="mb-5">
         <h1 className="text-[28px] font-semibold leading-tight tracking-tight text-primary">
-          {getGreeting()}, friend.
+          {getGreeting()}, {displayName}.
         </h1>
         <p className="mt-1 flex items-center gap-1.5 text-[13px] text-muted">
           <CalendarDays className="h-3.5 w-3.5" />

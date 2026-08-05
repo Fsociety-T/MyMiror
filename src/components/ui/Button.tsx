@@ -1,4 +1,4 @@
-import { forwardRef, type ButtonHTMLAttributes } from 'react'
+import { forwardRef, isValidElement, cloneElement, type ButtonHTMLAttributes, type ReactElement } from 'react'
 import { Loader2 } from 'lucide-react'
 import { cn } from '@/utils/cn'
 
@@ -10,6 +10,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   size?: ButtonSize
   loading?: boolean
   fullWidth?: boolean
+  asChild?: boolean
 }
 
 const variantClasses: Record<ButtonVariant, string> = {
@@ -27,25 +28,33 @@ const sizeClasses: Record<ButtonSize, string> = {
   icon: 'h-11 w-11 rounded-xl',
 }
 
+const baseClasses =
+  'inline-flex items-center justify-center gap-2 font-semibold transition-all duration-150 ' +
+  'select-none outline-none focus-visible:ring-2 focus-visible:ring-accent/50 ' +
+  'disabled:cursor-not-allowed disabled:opacity-50 active:scale-[0.97]'
+
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  (
-    { className, variant = 'primary', size = 'lg', loading, fullWidth, disabled, children, ...props },
-    ref,
-  ) => {
+  ({ className, variant = 'primary', size = 'lg', loading, fullWidth, disabled, asChild, children, ...props }, ref) => {
+    const classes = cn(
+      baseClasses,
+      variantClasses[variant],
+      sizeClasses[size],
+      fullWidth && 'w-full',
+      className,
+    )
+
+    if (asChild && isValidElement(children)) {
+      const child = children as ReactElement<{ className?: string }>
+      return cloneElement(child, {
+        className: cn(classes, child.props.className),
+      })
+    }
+
     return (
       <button
         ref={ref}
         disabled={disabled || loading}
-        className={cn(
-          'inline-flex items-center justify-center gap-2 font-semibold transition-all duration-150',
-          'select-none outline-none focus-visible:ring-2 focus-visible:ring-accent/50',
-          'disabled:cursor-not-allowed disabled:opacity-50',
-          'active:scale-[0.97]',
-          variantClasses[variant],
-          sizeClasses[size],
-          fullWidth && 'w-full',
-          className,
-        )}
+        className={classes}
         {...props}
       >
         {loading ? <Loader2 className="h-5 w-5 animate-spin" aria-hidden /> : null}
