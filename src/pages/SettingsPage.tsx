@@ -30,7 +30,10 @@ export function SettingsPage() {
     <div>
       <PageHeader title="Settings" subtitle="Your profile, security and preferences." />
 
-      <div className="mb-5 flex items-center gap-4 rounded-[20px] border border-line bg-card p-4">
+      <div
+        className="animate-fade-up mb-5 flex items-center gap-4 rounded-[20px] border border-line bg-card p-4"
+        style={{ animationDelay: '0.05s' }}
+      >
         <span className="flex h-14 w-14 items-center justify-center rounded-full border border-line bg-surface">
           <CircleUserRound className="h-6 w-6 text-muted" strokeWidth={1.5} />
         </span>
@@ -41,8 +44,12 @@ export function SettingsPage() {
       </div>
 
       <div className="grid gap-3">
-        {items.map(({ icon: Icon, title, description, phase }) => (
-          <Card key={title} className="flex items-center gap-4">
+        {items.map(({ icon: Icon, title, description, phase }, index) => (
+          <Card
+            key={title}
+            className="animate-fade-up flex items-center gap-4"
+            style={{ animationDelay: `${0.1 + index * 0.06}s` }}
+          >
             <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-line bg-surface">
               <Icon className="h-5 w-5 text-accent" strokeWidth={1.8} />
             </span>

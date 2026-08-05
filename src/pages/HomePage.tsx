@@ -35,14 +35,17 @@ export function HomePage() {
         </p>
       </section>
 
-      <section className="relative mb-4 overflow-hidden rounded-[24px] border border-accent/25 p-5">
+      <section
+        className="animate-fade-up relative mb-4 overflow-hidden rounded-[24px] border border-accent/25 p-5"
+        style={{ animationDelay: '0.06s' }}
+      >
         <div
           aria-hidden
           className="absolute inset-0 bg-gradient-to-br from-accent/25 via-card to-surface"
         />
         <div
           aria-hidden
-          className="absolute -top-16 -right-10 h-40 w-40 rounded-full bg-accent/20 blur-3xl"
+          className="animate-pulse-soft absolute -top-16 -right-10 h-40 w-40 rounded-full bg-accent/20 blur-3xl"
         />
         <div className="relative">
           <p className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-accent-soft">
@@ -58,7 +61,11 @@ export function HomePage() {
         </div>
       </section>
 
-      <Card className="mb-4" elevated>
+      <Card
+        className="animate-fade-up mb-4"
+        elevated
+        style={{ animationDelay: '0.12s' }}
+      >
         <div className="mb-3 flex items-center gap-1.5">
           <Hourglass className="h-4 w-4 text-accent" />
           <h2 className="text-[14px] font-semibold uppercase tracking-[0.08em] text-secondary">
@@ -74,7 +81,7 @@ export function HomePage() {
         </Button>
       </Card>
 
-      <Card className="mb-4">
+      <Card className="animate-fade-up mb-4" style={{ animationDelay: '0.18s' }}>
         <h2 className="mb-3 text-[14px] font-semibold uppercase tracking-[0.08em] text-secondary">
           Today
         </h2>
@@ -92,7 +99,7 @@ export function HomePage() {
         </Button>
       </Card>
 
-      <Card className="mb-4">
+      <Card className="animate-fade-up mb-4" style={{ animationDelay: '0.24s' }}>
         <h2 className="mb-3 text-[14px] font-semibold uppercase tracking-[0.08em] text-secondary">
           Day progress
         </h2>
@@ -116,8 +123,12 @@ export function HomePage() {
         type="button"
         onClick={() => setQuickAddOpen(true)}
         aria-label="Quick add"
-        className="fixed bottom-24 right-4 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-accent text-white shadow-[0_10px_28px_-6px_rgba(139,124,255,0.55)] transition-transform active:scale-95 sm:right-[calc(50%-215px+16px)]"
+        className="fixed bottom-24 right-4 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-accent text-white shadow-[0_10px_28px_-6px_rgba(139,124,255,0.55)] transition-transform duration-150 active:scale-90 sm:right-[calc(50%-215px+16px)]"
       >
+        <span
+          aria-hidden
+          className="animate-ping absolute inset-0 rounded-full bg-accent/40 [animation-duration:2.5s]"
+        />
         <Plus className="h-6 w-6" />
       </button>
 

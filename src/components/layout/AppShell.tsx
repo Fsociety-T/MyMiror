@@ -45,7 +45,9 @@ export function AppShell() {
           </Link>
         </header>
 
-        <main className="flex-1 px-4 pb-32 pt-4">{<Outlet />}</main>
+        <main key={location.pathname} className="animate-page-in flex-1 px-4 pb-32 pt-4">
+          {<Outlet />}
+        </main>
 
         <BottomNav />
       </div>

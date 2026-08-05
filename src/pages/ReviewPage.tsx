@@ -37,8 +37,12 @@ export function ReviewPage() {
         subtitle="Turn activity into learning. What worked, what should change?"
       />
       <div className="grid gap-3">
-        {sections.map(({ icon: Icon, title, description, phase }) => (
-          <Card key={title} className="flex items-center gap-4">
+        {sections.map(({ icon: Icon, title, description, phase }, index) => (
+          <Card
+            key={title}
+            className="animate-fade-up flex items-center gap-4"
+            style={{ animationDelay: `${0.05 + index * 0.06}s` }}
+          >
             <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-line bg-surface">
               <Icon className="h-5 w-5 text-accent" strokeWidth={1.8} />
             </span>

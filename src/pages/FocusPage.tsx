@@ -11,12 +11,16 @@ export function FocusPage() {
         subtitle="Protect your time and execute one important task."
       />
 
-      <Card className="mb-4 flex flex-col items-center py-8 text-center" elevated>
-        <span className="mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-accent/15">
+      <Card
+        className="animate-fade-up mb-4 flex flex-col items-center py-8 text-center"
+        elevated
+        style={{ animationDelay: '0.06s' }}
+      >
+        <span className="animate-breathe mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-accent/15">
           <Timer className="h-6 w-6 text-accent" />
         </span>
         <p className="text-[13px] font-medium text-muted">Select a task to begin</p>
-        <p className="mt-3 font-mono text-[56px] font-semibold leading-none tracking-tight text-primary tabular-nums">
+        <p className="animate-pulse-soft mt-3 font-mono text-[56px] font-semibold leading-none tracking-tight text-primary tabular-nums [animation-duration:4s]">
           25:00
         </p>
         <p className="mt-3 text-[13px] text-secondary">Pick a duration to customize the timer.</p>
@@ -26,12 +30,12 @@ export function FocusPage() {
       </Card>
 
       <div className="grid grid-cols-2 gap-3">
-        <Card>
+        <Card className="animate-fade-up" style={{ animationDelay: '0.14s' }}>
           <History className="mb-2 h-5 w-5 text-accent" strokeWidth={1.8} />
           <h2 className="text-[15px] font-semibold text-primary">Session history</h2>
           <p className="mt-0.5 text-[12px] text-muted">Your completed focus sessions.</p>
         </Card>
-        <Card>
+        <Card className="animate-fade-up" style={{ animationDelay: '0.2s' }}>
           <BarChart3 className="mb-2 h-5 w-5 text-accent" strokeWidth={1.8} />
           <h2 className="text-[15px] font-semibold text-primary">Time statistics</h2>
           <p className="mt-0.5 text-[12px] text-muted">Minutes focused by project.</p>
