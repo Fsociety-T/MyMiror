@@ -109,6 +109,20 @@ export function lifeScore(p: Pillars, w: Weights = DEFAULT_WEIGHTS): number {
   return Math.round((sum / weight) * 100)
 }
 
+/**
+ * Score a day that is already over — no on-pace adjustment, since there is no
+ * remaining day to be on pace for. This is what gets frozen into
+ * daily_logs.life_score and never recomputed.
+ */
+export function scoreFinishedDay(
+  d: DayInput,
+  goals: Goals = DEFAULT_GOALS,
+  weights: Weights = DEFAULT_WEIGHTS,
+) {
+  const p = pillars(d, goals, 1)
+  return { pillars: p, score: lifeScore(p, weights) }
+}
+
 /** One call for the UI: raw day in, score + pillars out. */
 export function scoreDay(
   d: DayInput,
