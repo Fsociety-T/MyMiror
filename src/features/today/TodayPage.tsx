@@ -1,7 +1,8 @@
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import { PageHeader } from '@/components/layout/PageHeader'
 import { greeting, longDate } from '@/lib/date'
 import { scoreDay } from '@/lib/score'
+import { goalsOf, weightsOf } from '@/features/profile/api'
 import { StreakCard } from '@/features/streaks/StreakCard'
 import { UrgeSurf } from '@/features/streaks/UrgeSurf'
 import { MainMission } from './components/MainMission'
@@ -9,42 +10,84 @@ import { PrayerRow } from './components/PrayerRow'
 import { ScoreRing } from './components/ScoreRing'
 import { VisionCard } from './components/VisionCard'
 import { VitalGrid } from './components/VitalGrid'
-import { MOCK_DAY, MOCK_MISSION, MOCK_STREAK, MOCK_VISION } from './mock'
+import { useTasks } from '@/features/tasks/hooks'
+import { PRAYER_COLUMNS, useProfile, useToday, useTogglePrayer } from './hooks'
+import { MOCK_STREAK, MOCK_VISION } from './mock'
 
 export function TodayPage() {
-  const [prayers, setPrayers] = useState<boolean[]>(() =>
-    Array.from({ length: 5 }, (_, i) => i < MOCK_DAY.prayersDone),
-  )
   const [surfing, setSurfing] = useState(false)
 
-  const prayersDone = prayers.filter(Boolean).length
+  const { data, isPending, error } = useToday()
+  const { data: profile } = useProfile()
+  const { data: tasks } = useTasks()
+  const togglePrayer = useTogglePrayer()
 
-  const { score, pillars } = useMemo(
-    () => scoreDay({ ...MOCK_DAY, prayersDone }),
-    [prayersDone],
+  // The starred task, else the first one still open.
+  const mission =
+    tasks?.find((t) => t.is_main_mission) ?? tasks?.find((t) => t.status !== 'done')
+
+  const log = data?.log
+  const day = data?.day
+
+  const prayers = PRAYER_COLUMNS.map((c) => Boolean(log?.[c]))
+
+  const { score, pillars } = scoreDay(
+    {
+      prayersDone: prayers.filter(Boolean).length,
+      sleepMinutes: day?.sleep_minutes ?? 0,
+      sportMinutes: day?.sport_minutes ?? 0,
+      focusMinutes: day?.focus_minutes ?? 0,
+      skillMinutes: day?.skill_minutes ?? 0,
+      tasksDone: day?.tasks_done ?? 0,
+      tasksTotal: day?.tasks_total ?? 0,
+    },
+    goalsOf(profile),
+    weightsOf(profile),
   )
+
+  const vision = {
+    title: profile?.vision_title || MOCK_VISION.title,
+    lines: profile?.vision_lines?.length ? profile.vision_lines : MOCK_VISION.lines,
+    quote: profile?.vision_quote ?? MOCK_VISION.quote,
+  }
 
   return (
     <>
-      <PageHeader title={greeting()} subtitle={longDate()} />
+      <PageHeader
+        title={greeting()}
+        subtitle={longDate()}
+        initials={(profile?.display_name ?? 'T').charAt(0).toUpperCase()}
+      />
+
+      {error && (
+        <div className="mb-3 rounded-[14px] border border-bad/30 bg-bad/10 p-3 text-[13px] text-bad">
+          {error instanceof Error ? error.message : "Couldn't load today."}
+        </div>
+      )}
 
       <div className="flex flex-col gap-3">
-        <VisionCard {...MOCK_VISION} index={0} />
-        <ScoreRing score={score} pillars={pillars} index={1} />
+        <VisionCard {...vision} index={0} />
+        <ScoreRing score={isPending ? 0 : score} pillars={pillars} index={1} />
         <PrayerRow
           done={prayers}
-          onToggle={(i) => setPrayers((p) => p.map((v, j) => (j === i ? !v : v)))}
+          onToggle={(i) =>
+            togglePrayer.mutate({ column: PRAYER_COLUMNS[i], next: !prayers[i] })
+          }
           index={2}
         />
-        <MainMission title={MOCK_MISSION} index={3} />
+        <MainMission
+          title={mission?.title ?? 'No task yet — add one with +'}
+          index={3}
+        />
         <VitalGrid
-          sleepMinutes={MOCK_DAY.sleepMinutes}
-          focusMinutes={MOCK_DAY.focusMinutes}
-          sportMinutes={MOCK_DAY.sportMinutes}
-          tasksDone={MOCK_DAY.tasksDone}
-          tasksTotal={MOCK_DAY.tasksTotal}
+          sleepMinutes={day?.sleep_minutes ?? 0}
+          focusMinutes={day?.focus_minutes ?? 0}
+          sportMinutes={day?.sport_minutes ?? 0}
+          tasksDone={day?.tasks_done ?? 0}
+          tasksTotal={day?.tasks_total ?? 0}
           index={4}
         />
+        {/* Streaks are Phase 3 — still mock. */}
         <StreakCard {...MOCK_STREAK} onUrgeSurf={() => setSurfing(true)} index={5} />
       </div>
 
