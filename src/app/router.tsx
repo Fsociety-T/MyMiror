@@ -49,7 +49,9 @@ function Gate() {
 
 export function Router() {
   return (
-    <BrowserRouter>
+    // GitHub Pages serves the app from /<repo>/, so every route has to be
+    // resolved against Vite's base rather than the domain root.
+    <BrowserRouter basename={import.meta.env.BASE_URL}>
       <Gate />
     </BrowserRouter>
   )
